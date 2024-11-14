@@ -1,0 +1,84 @@
+<html>
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+    <h4>Welcome to Lucky 7 Game</h4>
+  <div id="setBet">
+    <p>Place your Bet (Rs. 10)</p>
+    <input type = "radio" name= "bet" value="1" onclick="setBet(1)">Below 7
+    <input type = "radio" name= "bet" value="2" onclick="setBet(2)">Lucky 7
+    <input type = "radio" name= "bet" value="3" onclick="setBet(3)">Above 7
+    <button id="play" onclick="play()">Play</button>
+  </div>
+  <div id="result" style="display: none;">
+    <p>Game Results:</p>
+    <div id="dice1">Dice 1: <span id ="dice1Val"></span></div>
+    <div id="dice2">Dice 2: <span id ="dice2Val"></span></div>
+    <div id="total">Total: <span id ="total_value"></span></div>
+    <div id="message"></div>
+    
+  </div>
+  <div id="reset_div" style="display: none;">
+    <button onclick="reset()">Reset and Play Again</button> <button onclick="continue_game()">Continue Paying</button>
+  </div>
+  <script>
+    var userBet = 1;
+    var balance = 100;
+    function setBet(n){
+        var bet = "";
+        if(n == 1){
+            bet = "Below 7";
+        }else if(n == 2){
+            bet == "Lucky 7";
+        }else if(n == 3){
+            bet = "Above 7";
+        }else{
+            alert("Invalid Input");
+        }
+        if(n == 1 || n == 2 || n == 3){
+            userBet = n;
+            
+        }
+    }
+    function play(){
+        if(balance >= 10){
+            balance = balance - 10;
+        }else{
+            alert("Your balance is Low. Please Reset.");
+            $('#reset_div').show();
+        }
+        $('#play').hide();
+        var dice1 =Math.floor(Math.random()*6) + 1;
+        var dice2 = Math.floor(Math.random()*6) + 1;
+        var total = dice1+dice2;
+        $('#result').show();
+        $('#dice1Val').html(dice1);
+        $('#dice2Val').html(dice2);
+        $('#total_value').html(total);
+        // alert(userBet);alert(total);
+        if((total < 7 && userBet == 1) || (total > 7 && userBet == 3)){
+            balance = balance + 20;
+            $('#message').html('Congratulations! You Win! Your balance is now '+ balance);
+        }else if(total == 7 && userBet == 2){
+            balance = balance + 30;
+            $('#message').html('Congratulations! You Win! Your balance is now '+ balance);
+        }else{
+            $('#message').html('You Loose. Your balance is now '+ balance);
+        }
+        $('#reset_div').show();
+    }
+    function reset(){
+        balance = 100;
+        $('#play').show();
+        $('#reset_div').hide();
+        $('#message').html('');
+    }
+    function continue_game(){
+        $('#play').show();
+        $('#reset_div').hide();
+    }
+  </script>
+</body>
+</html>
